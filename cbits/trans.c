@@ -27,3 +27,8 @@ int doTrans (UTransliterator *trans, UChar *text, int len)
 
 }
 
+const char *__hs_u_errorName(UErrorCode code)
+{
+    return u_errorName(code);
+}
+
