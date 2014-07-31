@@ -20,8 +20,10 @@ int doTrans (UTransliterator *trans, UChar *text, int len)
 {
   UErrorCode err = 0;
   int lim = len;
-  utrans_transUChars (trans, text, 0, len, 0, &lim, &err);
+  utrans_transUChars (trans, text, &len, len, 0, &lim, &err);
+
+  printf ("trans len=%d err=%d\n", len, err);
+  printf ("T: %s\n", u_errorName (err));
 
 }
-
 
