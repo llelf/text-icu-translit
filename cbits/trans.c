@@ -13,6 +13,7 @@ void *openTrans (const UChar *name, int len, UErrorCode *err)
 void closeTrans (UTransliterator *trans)
 {
   /* printf ("close\n"); */
+  utrans_close (trans);
 }
 
 int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
