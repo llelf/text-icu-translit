@@ -35,6 +35,31 @@ instance Exception ICUError
 #include <unicode/utypes.h>
 
 
+-- | Indicate whether the given error code is a failure.
+isFailure :: ICUError -> Bool
+{-# INLINE isFailure #-}
+isFailure = (> 0) . fromErrorCode
+
+
+-- | Throw an exception if the given code is actually an error.
+throwOnError :: UErrorCode -> IO ()
+{-# INLINE throwOnError #-}
+throwOnError code = do
+  let err = (ICUError code)
+  if isFailure err
+    then throwIO err
+    else return ()
+
+
+
+handleError :: (Ptr UErrorCode -> IO a) -> IO a
+{-# INLINE handleError #-}
+handleError action = with 0 $ \errPtr -> do
+                       ret <- action errPtr
+                       throwOnError =<< peek errPtr
+                       return ret
+
+
 
 -- | Deal with ICU functions that report a buffer overflow error if we
 -- give them an insufficiently large buffer.  The difference between
