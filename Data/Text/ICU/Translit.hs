@@ -1,18 +1,20 @@
 
-module Data.Text.ICU.Translit where
+module Data.Text.ICU.Translit (trans, transliterate) where
 
 
-import Data.Text.ICU.Translit.Internal as IO
+import qualified Data.Text.ICU.Translit.Internal as IO
 import System.IO.Unsafe
 import Data.Text
 
 
-
-trans :: Text -> Transliterator
+-- | Construct new transliterator by name. Will throw error if there's
+-- no such transliterator
+trans :: Text -> IO.Transliterator
 trans t = unsafePerformIO $ IO.transliterator t
 
 
-transliterate :: Transliterator -> Text -> Text
-transliterate tr txt = unsafePerformIO $ IO.transliterate tr txt
 
+-- | Transliterate the text using the transliterator
+transliterate :: IO.Transliterator -> Text -> Text
+transliterate tr txt = unsafePerformIO $ IO.transliterate tr txt
 
