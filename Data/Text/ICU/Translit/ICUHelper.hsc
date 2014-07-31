@@ -11,6 +11,16 @@ module Data.Text.ICU.Translit.ICUHelper
     , throwOnError
     ) where
 
+
+-- Many functions in this module are straight from the
+-- Data.Text.ICU.Error.Internal (text-icu).
+-- 
+-- XXX TODO:
+--   ⋆ export this and similar functionality somewhere;
+-- or
+--   ⋆ merge text-icu-* into text-icu?
+
+
 import Foreign.Storable (Storable(..))
 import Data.Int (Int32)
 import Control.Exception (Exception, throwIO)
@@ -67,8 +77,9 @@ handleError action = with 0 $ \errPtr -> do
 -- | Deal with ICU functions that report a buffer overflow error if we
 -- give them an insufficiently large buffer.  The difference between
 -- this function and
--- 'Data.Text.ICU.Error.Internal.handleOverflowError' is that our
--- buffer is filled with data.
+-- 'Data.Text.ICU.Error.Internal.handleOverflowError' is that this one
+-- doesn't change the contents of the provided buffer, while the
+-- latter assumes buffers to be write-only.
 handleFilledOverflowError :: (Storable a) =>
                              Ptr a
                           -- ^ Initial buffer.
