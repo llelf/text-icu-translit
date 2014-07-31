@@ -3,9 +3,9 @@ module Data.Text.ICU.Translit.Internal where
 import Foreign
 import Data.Text
 import Data.Text.Foreign
+import Data.Text.ICU.Translit.ICUHelper
 
 data UTransliterator
-type UChar = Word16
 
 foreign import ccall "trans.h openTrans" openTrans :: Ptr UChar -> Int -> IO (Ptr UTransliterator)
 foreign import ccall "trans.h &closeTrans" closeTrans :: FunPtr (Ptr UTransliterator -> IO ())

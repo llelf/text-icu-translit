@@ -17,7 +17,8 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Data.Text.ICU.Translit
-  other-modules:       Data.Text.ICU.Translit.Internal
+  other-modules:       Data.Text.ICU.Translit.Internal,
+                       Data.Text.ICU.Translit.ICUHelper
 
   c-sources: cbits/trans.c
   include-dirs: include
