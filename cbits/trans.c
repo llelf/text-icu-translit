@@ -16,15 +16,18 @@ void closeTrans (UTransliterator *trans)
   printf ("close\n");
 }
 
-int doTrans (UTransliterator *trans, UChar *text, int len)
+int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
+		 int32_t capacity, UErrorCode *err)
 {
-  UErrorCode err = 0;
+  int was1 = len, was2 = capacity;
   int lim = len;
-  utrans_transUChars (trans, text, &len, len, 0, &lim, &err);
 
-  printf ("trans len=%d err=%d\n", len, err);
-  printf ("T: %s\n", u_errorName (err));
+  utrans_transUChars (trans, text, &len, capacity, 0, &lim, err);
 
+  printf ("trans len=%d,%d->%d,%d err=%d\n", was1, was2, capacity, lim, *err);
+  printf ("T: %s\n", u_errorName (*err));
+
+  return lim;
 }
 
 const char *__hs_u_errorName(UErrorCode code)

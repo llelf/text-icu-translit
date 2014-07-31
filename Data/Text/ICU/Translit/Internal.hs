@@ -10,12 +10,14 @@ data UTransliterator
 foreign import ccall "trans.h openTrans" openTrans :: Ptr UChar -> Int -> IO (Ptr UTransliterator)
 foreign import ccall "trans.h &closeTrans" closeTrans :: FunPtr (Ptr UTransliterator -> IO ())
 foreign import ccall "trans.h doTrans" doTrans
-    :: Ptr UTransliterator -> Ptr UChar -> Int -> IO Int
+    :: Ptr UTransliterator -> Ptr UChar -> Int32 -> Int32 -> Ptr UErrorCode -> IO Int32
 
 
 
 data Transliterator = Transliterator { transPtr :: ForeignPtr UTransliterator }
                       deriving Show
+
+
 
 transliterator :: Text -> IO Transliterator
 transliterator tr =
@@ -31,6 +33,10 @@ transliterate tr txt = do
   (fptr, len) <- asForeignPtr txt
   withForeignPtr fptr $ \ptr ->
       withForeignPtr (transPtr tr) $ \tr_ptr -> do
-                         doTrans tr_ptr ptr (fromIntegral len)
-                         fromPtr ptr len
+             handleFilledOverflowError ptr (fromIntegral len)
+                 (\dptr dlen ->
+                        doTrans tr_ptr dptr (fromIntegral len) (fromIntegral dlen))
+                 (\dptr dlen ->
+                        print (dptr,dlen) >> fromPtr (castPtr dptr) (fromIntegral dlen))
+
 
