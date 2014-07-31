@@ -1,12 +1,12 @@
 #include <unicode/utrans.h>
 #include <stdio.h>
 
-void *openTrans (const UChar *name)
+void *openTrans (const UChar *name, int len)
 {
   UErrorCode err = 0;
-  UTransliterator *tr = utrans_openU (name, -1, UTRANS_FORWARD, 0, -1, 0, &err);
+  UTransliterator *tr = utrans_openU (name, len, UTRANS_FORWARD, 0, -1, 0, &err);
 
-  printf ("trans %p\n", tr);
+  printf ("trans %p, err=%s\n", tr, u_errorName(err));
 
   return tr;
 }
