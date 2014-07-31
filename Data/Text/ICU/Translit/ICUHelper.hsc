@@ -1,20 +1,23 @@
 {-# LANGUAGE DeriveDataTypeable, MultiWayIf #-}
-module Data.Text.ICU.Translit.ICUHelper where
+module Data.Text.ICU.Translit.ICUHelper
+    (
+      ICUError(..)
+    , UChar
+    , UErrorCode
+    , isFailure
+    , errorName
+    , handleError
+    , handleFilledOverflowError
+    , throwOnError
+    ) where
 
-import Foreign.C.Types (CInt(..))
 import Foreign.Storable (Storable(..))
 import Data.Int (Int32)
---import Control.DeepSeq (NFData(..))
 import Control.Exception (Exception, throwIO)
-import Data.Function (fix)
-import Foreign.Ptr (Ptr)
-import Foreign.Marshal.Alloc (alloca)
 import Foreign.Marshal.Utils (with)
-import Foreign.Marshal.Array (allocaArray)
-import Data.Int (Int32)
 import Data.Typeable (Typeable)
-import Foreign.C.String (CString, peekCString)
 import Foreign.C.Types (CInt(..))
+import Foreign.C.String (CString, peekCString)
 import Foreign.Storable (Storable(..))
 import System.IO.Unsafe (unsafePerformIO)
 import Foreign
