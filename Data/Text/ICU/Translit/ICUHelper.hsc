@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, MultiWayIf #-}
 module Data.Text.ICU.Translit.ICUHelper where
 
 import Foreign.C.Types (CInt(..))
@@ -35,30 +35,45 @@ instance Exception ICUError
 #include <unicode/utypes.h>
 
 
+
 -- | Deal with ICU functions that report a buffer overflow error if we
--- give them an insufficiently large buffer.  Our first call will
--- report a buffer overflow, in which case we allocate a correctly
--- sized buffer and try again.
-handleOverflowError :: (Storable a) =>
-                       Int
-                    -- ^ Initial guess at buffer size.
-                    -> (Ptr a -> Int32 -> Ptr UErrorCode -> IO Int32)
-                    -- ^ Function that retrieves data.
-                    -> (Ptr a -> Int -> IO b)
-                    -- ^ Function that fills destination buffer if no
-                    -- overflow occurred.
-                    -> IO b
-handleOverflowError guess fill retrieve =
-  alloca $ \uerrPtr -> flip fix guess $ \loop n ->
-    (either (loop . fromIntegral) return =<<) . allocaArray n $ \ptr -> do
-      poke uerrPtr 0
-      ret <- fill ptr (fromIntegral n) uerrPtr
-      err <- peek uerrPtr
-      case undefined of
-        _| err == (#const U_BUFFER_OVERFLOW_ERROR)
-                     -> return (Left ret)
-         | err > 0   -> throwIO (ICUError err)
-         | otherwise -> Right `fmap` retrieve ptr (fromIntegral ret)
+-- give them an insufficiently large buffer.  The difference between
+-- this function and
+-- 'Data.Text.ICU.Error.Internal.handleOverflowError' is that our
+-- buffer is filled with data.
+handleFilledOverflowError :: (Storable a) =>
+                             Ptr a
+                          -- ^ Initial buffer.
+                          -> Int
+                          -- ^ Initial buffer size.
+                          -> (Ptr a -> Int32 -> Ptr UErrorCode -> IO Int32)
+                          -- ^ Function that retrieves data.
+                          -> (Ptr a -> Int -> IO b)
+                          -- ^ Function that fills destination buffer if no
+                          -- overflow occurred.
+                          -> IO b
+handleFilledOverflowError text len0 fill retrieve =
+    do buf0 <- mallocArray len0
+       copyArray buf0 text len0
+       go buf0 len0
+    where
+      go buf len = alloca $ \errPtr -> do
+                     poke errPtr 0
+                     len' <- fill buf (fromIntegral len) errPtr
+                     err <- peek errPtr
+                     if | err == (#const U_BUFFER_OVERFLOW_ERROR)
+                            -> do buf' <- reallocArray buf (fromIntegral len')
+                                  go buf' (fromIntegral len')
+                        | err > 0
+                            -> throwIO (ICUError err)
+                        | otherwise
+                            -> retrieve buf (fromIntegral len')
+
+
+
+
+
+
 
 
 -- | Return a string representing the name of the given error code.
