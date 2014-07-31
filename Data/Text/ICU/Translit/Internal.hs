@@ -39,6 +39,6 @@ transliterate tr txt = do
                  (\dptr dlen ->
                         doTrans tr_ptr dptr (fromIntegral len) (fromIntegral dlen))
                  (\dptr dlen ->
-                        print (dptr,dlen) >> fromPtr (castPtr dptr) (fromIntegral dlen))
+                        fromPtr (castPtr dptr) (fromIntegral dlen))
 
 
