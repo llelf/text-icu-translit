@@ -7,8 +7,10 @@ import Data.Text.ICU.Translit.ICUHelper
 
 data UTransliterator
 
-foreign import ccall "trans.h openTrans" openTrans :: Ptr UChar -> Int -> IO (Ptr UTransliterator)
-foreign import ccall "trans.h &closeTrans" closeTrans :: FunPtr (Ptr UTransliterator -> IO ())
+foreign import ccall "trans.h openTrans" openTrans
+    :: Ptr UChar -> Int -> Ptr UErrorCode -> IO (Ptr UTransliterator)
+foreign import ccall "trans.h &closeTrans" closeTrans
+    :: FunPtr (Ptr UTransliterator -> IO ())
 foreign import ccall "trans.h doTrans" doTrans
     :: Ptr UTransliterator -> Ptr UChar -> Int32 -> Int32 -> Ptr UErrorCode -> IO Int32
 
@@ -22,7 +24,7 @@ data Transliterator = Transliterator { transPtr :: ForeignPtr UTransliterator }
 transliterator :: Text -> IO Transliterator
 transliterator tr =
     useAsPtr tr $ \ptr len -> do
-           q <- openTrans ptr (fromIntegral len)
+           q <- handleError $ openTrans ptr (fromIntegral len)
            ref <- newForeignPtr closeTrans q
            touchForeignPtr ref
            return $ Transliterator ref
