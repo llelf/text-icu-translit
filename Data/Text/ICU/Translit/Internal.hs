@@ -16,18 +16,24 @@ foreign import ccall "trans.h doTrans" doTrans
 
 
 
-data Transliterator = Transliterator { transPtr :: ForeignPtr UTransliterator }
-                      deriving Show
+data Transliterator = Transliterator {
+      transPtr :: ForeignPtr UTransliterator,
+      transSpec :: Text
+    }
+
+
+instance Show Transliterator where
+    show tr = "Transliterator " ++ show (transSpec tr)
 
 
 
 transliterator :: Text -> IO Transliterator
-transliterator tr =
-    useAsPtr tr $ \ptr len -> do
+transliterator spec =
+    useAsPtr spec $ \ptr len -> do
            q <- handleError $ openTrans ptr (fromIntegral len)
            ref <- newForeignPtr closeTrans q
            touchForeignPtr ref
-           return $ Transliterator ref
+           return $ Transliterator ref spec
 
 
 transliterate :: Transliterator -> Text -> IO Text
