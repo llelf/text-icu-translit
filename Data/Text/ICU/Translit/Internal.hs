@@ -1,4 +1,7 @@
-module Data.Text.ICU.Translit.Internal where
+module Data.Text.ICU.Translit.Internal
+    (Transliterator,
+     transliterator,
+     transliterate) where
 
 import Foreign
 import Data.Text
