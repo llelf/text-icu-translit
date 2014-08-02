@@ -2,8 +2,9 @@
 #include <unicode/utrans.h>
 #include <unicode/ustring.h>
 #include <unicode/ustdio.h>
+#include <trans.h>
 
-int main()
+int main (int argc, char *argv[])
 {
   UErrorCode err = 0;
 
@@ -14,12 +15,12 @@ int main()
 
 
   UChar name[128];
-  u_strFromUTF8 (name, sizeof name, 0, "Katakana-Hiragana", -1, &err);
+  u_strFromUTF8 (name, sizeof name, 0, argv[1], -1, &err);
 
   UTransliterator *trans = utrans_openU (name, -1, UTRANS_FORWARD, 0, -1, 0, &err);
 
   UChar text[128];
-  u_strFromUTF8 (text, sizeof text, 0, "чебурашка π カタカナ", -1, &err);
+  u_strFromUTF8 (text, sizeof text, 0, argv[2] ?: "ローマ字. чебурашка π カタカナ", -1, &err);
 
   int32_t lim = u_strlen(text);
   utrans_transUChars (trans, text, 0, sizeof text, 0, &lim, &err);
