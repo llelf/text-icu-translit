@@ -1,6 +1,6 @@
 
-module Data.Text.ICU.Translit (trans, transliterate) where
-
+module Data.Text.ICU.Translit
+    (IO.Transliterator, trans, transliterate) where
 
 import qualified Data.Text.ICU.Translit.Internal as IO
 import System.IO.Unsafe
