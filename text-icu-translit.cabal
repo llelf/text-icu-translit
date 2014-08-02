@@ -13,8 +13,8 @@ maintainer:          me@lelf.lu
 -- copyright:           
 category:            Text
 build-type:          Simple
--- extra-source-files:  
 cabal-version:       >=1.10
+extra-source-files:  include/trans.h
 
 library
   exposed-modules:     Data.Text.ICU.Translit
