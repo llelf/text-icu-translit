@@ -25,8 +25,8 @@ import Control.Exception (Exception, throwIO)
 import Data.Typeable (Typeable)
 import Foreign.C.Types (CInt(..))
 import Foreign.C.String (CString, peekCString)
-import System.IO.Unsafe (unsafePerformIO)
-import Foreign
+import qualified System.IO.Unsafe as IO (unsafePerformIO)
+import Foreign 
 
 type UErrorCode = CInt
 type UChar = Word16
@@ -114,7 +114,7 @@ handleFilledOverflowError text len0 fill retrieve =
 
 -- | Return a string representing the name of the given error code.
 errorName :: ICUError -> String
-errorName code = unsafePerformIO $
+errorName code = IO.unsafePerformIO $
                  peekCString (u_errorName (fromErrorCode code))
 
 foreign import ccall unsafe "icu.h __icu_translit_u_errorName" u_errorName
