@@ -9,8 +9,9 @@ description:
 license:             BSD3
 license-file:        LICENSE
 author:              Antonio Nikishaev
-maintainer:          me@lelf.lu
--- copyright:           
+maintainer:          Antonio Nikishaev <me@lelf.lu>
+copyright:           2014 Antonio Nikishaev
+bug-reports:         https://github.com/llelf/text-icu-translit/issues
 category:            Text
 build-type:          Simple
 cabal-version:       >=1.10
@@ -48,4 +49,13 @@ test-suite tests
                        QuickCheck >= 2.4,
                        test-framework >= 0.8,
                        test-framework-quickcheck2 >= 0.3
+
+
+source-repository head
+  type:     darcs
+  location: http://hub.darcs.net/lelf/text-icu-translit
+
+source-repository head
+  type:     git
+  location: https://github.com/llelf/text-icu-translit
 
