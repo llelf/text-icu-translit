@@ -21,14 +21,10 @@ module Data.Text.ICU.Translit.ICUHelper
 --   ⋆ merge text-icu-* into text-icu?
 
 
-import Foreign.Storable (Storable(..))
-import Data.Int (Int32)
 import Control.Exception (Exception, throwIO)
-import Foreign.Marshal.Utils (with)
 import Data.Typeable (Typeable)
 import Foreign.C.Types (CInt(..))
 import Foreign.C.String (CString, peekCString)
-import Foreign.Storable (Storable(..))
 import System.IO.Unsafe (unsafePerformIO)
 import Foreign
 
