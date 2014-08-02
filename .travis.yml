@@ -4,3 +4,4 @@ ghc:
 
 install:
   - sudo apt-get install libicu-dev
+  - cabal install --enable-tests --only-dependencies
