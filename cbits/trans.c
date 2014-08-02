@@ -30,7 +30,7 @@ int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
   return lim;
 }
 
-const char *__hs_u_errorName(UErrorCode code)
+const char *__icu_translit_u_errorName(UErrorCode code)
 {
     return u_errorName(code);
 }
