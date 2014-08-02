@@ -21,6 +21,8 @@ library
   other-modules:       Data.Text.ICU.Translit.Internal,
                        Data.Text.ICU.Translit.ICUHelper
 
+  ghc-options: -Wall
+
   c-sources: cbits/trans.c
   include-dirs: include
 
