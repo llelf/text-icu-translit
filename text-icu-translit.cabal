@@ -1,6 +1,6 @@
 
 name:                text-icu-translit
-version:             0.1.0.0
+version:             0.1.0.7
 synopsis:            ICU transliteration
 description:
   Bindings to the transliteration features by the
