@@ -19,12 +19,13 @@ void closeTrans (UTransliterator *trans)
 int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
 		 int32_t capacity, UErrorCode *err)
 {
-  int was1 = len, was2 = capacity;
+  /* int len0 = len; */
   int lim = len;
 
   utrans_transUChars (trans, text, &len, capacity, 0, &lim, err);
 
-  /* printf ("trans len=%d,%d->%d,%d err=%d\n", was1, was2, capacity, lim, *err); */
+  /* printf ("trans len=lim=%d cap=%d -> len=%d lim=%d err=%d\n", */
+  /* 	  len0, capacity, len, lim, *err); */
   /* printf ("T: %s\n", u_errorName (*err)); */
 
   return lim;
