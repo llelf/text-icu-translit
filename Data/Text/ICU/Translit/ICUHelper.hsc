@@ -102,6 +102,7 @@ handleFilledOverflowError text len0 fill retrieve =
                      err <- peek errPtr
                      if | err == (#const U_BUFFER_OVERFLOW_ERROR)
                             -> do buf' <- reallocArray buf (fromIntegral len')
+                                  copyArray buf' text len0
                                   go buf' (fromIntegral len')
                         | err > 0
                             -> throwIO (ICUError err)
