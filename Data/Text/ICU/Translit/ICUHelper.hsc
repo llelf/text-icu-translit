@@ -117,6 +117,6 @@ errorName :: ICUError -> String
 errorName code = IO.unsafePerformIO $
                  peekCString (u_errorName (fromErrorCode code))
 
-foreign import ccall unsafe "icu.h __icu_translit_u_errorName" u_errorName
+foreign import ccall unsafe "trans.h __hs_translit_u_errorName" u_errorName
     :: UErrorCode -> CString
 

@@ -10,12 +10,13 @@ import Data.Text.ICU.Translit.ICUHelper
 
 data UTransliterator
 
-foreign import ccall "trans.h openTrans" openTrans
+foreign import ccall "trans.h __hs_translit_open_trans" openTrans
     :: Ptr UChar -> Int -> Ptr UErrorCode -> IO (Ptr UTransliterator)
-foreign import ccall "trans.h &closeTrans" closeTrans
+foreign import ccall "trans.h &__hs_translit_close_trans" closeTrans
     :: FunPtr (Ptr UTransliterator -> IO ())
-foreign import ccall "trans.h doTrans" doTrans
-    :: Ptr UTransliterator -> Ptr UChar -> Int32 -> Int32 -> Ptr UErrorCode -> IO Int32
+foreign import ccall "trans.h __hs_translit_do_trans" doTrans
+    :: Ptr UTransliterator -> Ptr UChar -> Int32 -> Int32
+    -> Ptr UErrorCode -> IO Int32
 
 
 

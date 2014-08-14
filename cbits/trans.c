@@ -1,7 +1,9 @@
 #include <unicode/utrans.h>
 #include <stdio.h>
+#include "trans.h"
 
-void *openTrans (const UChar *name, int len, UErrorCode *err)
+void *
+__hs_translit_open_trans (const UChar *name, int len, UErrorCode *err)
 {
   UTransliterator *tr = utrans_openU (name, len, UTRANS_FORWARD, 0, -1, 0, err);
 
@@ -10,14 +12,16 @@ void *openTrans (const UChar *name, int len, UErrorCode *err)
   return tr;
 }
 
-void closeTrans (UTransliterator *trans)
+void
+__hs_translit_close_trans (UTransliterator *trans)
 {
   /* printf ("close\n"); */
   utrans_close (trans);
 }
 
-int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
-		 int32_t capacity, UErrorCode *err)
+int32_t
+__hs_translit_do_trans (UTransliterator *trans, UChar *text, int32_t len,
+			 int32_t capacity, UErrorCode *err)
 {
   /* int len0 = len; */
   int lim = len;
@@ -31,7 +35,9 @@ int32_t doTrans (UTransliterator *trans, UChar *text, int32_t len,
   return lim;
 }
 
-const char *__icu_translit_u_errorName(UErrorCode code)
+
+const char *
+__hs_translit_u_errorName (UErrorCode code)
 {
     return u_errorName(code);
 }
