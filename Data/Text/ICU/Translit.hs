@@ -23,7 +23,7 @@
 module Data.Text.ICU.Translit
     (IO.Transliterator, trans, transliterate) where
 
-import qualified Data.Text.ICU.Translit.Internal as IO
+import qualified Data.Text.ICU.Translit.IO as IO
 import System.IO.Unsafe
 import Data.Text
 

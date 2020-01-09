@@ -1,4 +1,4 @@
-module Data.Text.ICU.Translit.Internal
+module Data.Text.ICU.Translit.IO
     (Transliterator,
      transliterator,
      transliterate) where

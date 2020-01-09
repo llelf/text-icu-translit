@@ -18,9 +18,9 @@ cabal-version:       >=1.10
 extra-source-files:  include/trans.h
 
 library
-  exposed-modules:     Data.Text.ICU.Translit
-  other-modules:       Data.Text.ICU.Translit.Internal,
-                       Data.Text.ICU.Translit.ICUHelper
+  exposed-modules:     Data.Text.ICU.Translit,
+                       Data.Text.ICU.Translit.IO
+  other-modules:       Data.Text.ICU.Translit.ICUHelper
 
   ghc-options: -Wall
 
