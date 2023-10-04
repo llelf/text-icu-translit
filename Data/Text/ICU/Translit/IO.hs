@@ -34,7 +34,7 @@ instance Show Transliterator where
 transliterator :: Text -> IO Transliterator
 transliterator spec =
     useAsPtr spec $ \ptr len -> do
-           q <- handleError $ openTrans ptr (fromIntegral len)
+           q <- handleError $ openTrans (castPtr ptr) (fromIntegral len)
            ref <- newForeignPtr closeTrans q
            touchForeignPtr ref
            return $ Transliterator ref spec
@@ -47,7 +47,7 @@ transliterate tr txt = do
       withForeignPtr (transPtr tr) $ \tr_ptr -> do
              handleFilledOverflowError ptr (fromIntegral len)
                  (\dptr dlen ->
-                        doTrans tr_ptr dptr (fromIntegral len) (fromIntegral dlen))
+                        doTrans tr_ptr (castPtr dptr) (fromIntegral len) (fromIntegral dlen))
                  (\dptr dlen ->
                         fromPtr (castPtr dptr) (fromIntegral dlen))
 
